@@ -9,3 +9,9 @@ To install you can use the following command:
 ```sh
 sudo ./install.sh
 ```
+
+## Dumping domains
+
+```sh
+./dump.sh qemu+ssh://hv/system
+```
