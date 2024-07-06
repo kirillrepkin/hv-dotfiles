@@ -91,13 +91,13 @@ function app_network_manipulation() {
 	if [[ $command == "stopped" ]] || [[ $command == "reconnect" ]]; then
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			remove_port_nat_port_forwarding 192.168.122.78 13333 13333 
+			remove_port_nat_port_forwarding 192.168.122.50 13333 13333 
 		fi
 	fi
 	if [[ $command == "start" ]] || [[ $command == "reconnect" ]]; then
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			add_port_nat_port_forwarding 192.168.122.78 13333 13333
+			add_port_nat_port_forwarding 192.168.122.50 13333 13333
 		fi
 	fi	
 }
