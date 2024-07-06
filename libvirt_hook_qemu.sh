@@ -110,13 +110,17 @@ function app_network_manipulation() {
 			ipv4_addr=192.168.122.50
 			# sunshine/moonlight remote gaming
 			remove_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47985 47985
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47986 47986
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47987 47987
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47988 47988
 			remove_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47990 47990
 			remove_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
+			remove_port_nat_port_forwarding $ipv4_addr udp 48010 48010
 			remove_port_nat_port_forwarding $ipv4_addr udp 47998 47998
 			remove_port_nat_port_forwarding $ipv4_addr udp 47999 47999
 			remove_port_nat_port_forwarding $ipv4_addr udp 48000 48000
-			remove_port_nat_port_forwarding $ipv4_addr udp 48002 48002
-			remove_port_nat_port_forwarding $ipv4_addr udp 48010 48010
 			# remote desktop protocol
 			remove_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
 			remove_port_nat_port_forwarding $ipv4_addr udp 3389 3389
@@ -127,13 +131,17 @@ function app_network_manipulation() {
 			ipv4_addr=192.168.122.50
 			# sunshine/moonlight remote gaming
 			add_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
+			add_port_nat_port_forwarding $ipv4_addr tcp 47985 47985
+			add_port_nat_port_forwarding $ipv4_addr tcp 47986 47986
+			add_port_nat_port_forwarding $ipv4_addr tcp 47987 47987
+			add_port_nat_port_forwarding $ipv4_addr tcp 47988 47988
 			add_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
+			add_port_nat_port_forwarding $ipv4_addr tcp 47990 47990
 			add_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
+			add_port_nat_port_forwarding $ipv4_addr udp 48010 48010
 			add_port_nat_port_forwarding $ipv4_addr udp 47998 47998
 			add_port_nat_port_forwarding $ipv4_addr udp 47999 47999
 			add_port_nat_port_forwarding $ipv4_addr udp 48000 48000
-			add_port_nat_port_forwarding $ipv4_addr udp 48002 48002
-			add_port_nat_port_forwarding $ipv4_addr udp 48010 48010
 			# remote desktop protocol
 			add_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
 			add_port_nat_port_forwarding $ipv4_addr udp 3389 3389
