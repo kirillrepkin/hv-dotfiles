@@ -9,4 +9,9 @@ function update_symlink() {
     ln -s $srcfile $symlink
 }
 
-update_symlink /etc/libvirt/hooks/qemu $(pwd)/libvirt_hook_qemu.sh
+# libvirt hooks
+update_symlink /etc/libvirt/hooks/qemu $(pwd)/libvirt/hook_qemu.sh
+
+# modprobe
+update_symlink /etc/modprobe.d/blacklist.conf $(pwd)/modprobe/blacklist.conf
+update_symlink /etc/modprobe.d/vfio.conf $(pwd)/modprobe/vfio.conf
