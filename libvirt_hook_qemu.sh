@@ -10,6 +10,7 @@ tmp_file=/tmp/libvirt_guest_name.txt
 # machine specific variables
 cpu_cores_default="0-15"
 cpu_cores_dedicated="0,8,1,9,2,10,3,11"
+qemu_network_name="virbr0"
 
 
 # Resets a USB device by finding the device with the specified vendor ID and product ID and then toggling its authorization.
@@ -34,12 +35,13 @@ function usb_reset() {
 # @param GUEST_IP The IP address of the guest machine.
 # @param GUEST_PORT The port number on the guest machine.
 # @param HOST_PORT The port number on the host machine.
+# @return void
 function add_port_nat_port_forwarding() {
 	GUEST_IP=$1
 	PROTO=$2
 	GUEST_PORT=$3
 	HOST_PORT=$4
-	iptables -I FORWARD -o virbr0 -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
+	iptables -I FORWARD -o $qemu_network_name -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
 	iptables -t nat -I PREROUTING -p $PROTO --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
 }
 
@@ -54,7 +56,7 @@ function remove_port_nat_port_forwarding() {
 	PROTO=$2
 	GUEST_PORT=$3
 	HOST_PORT=$4
-	iptables -D FORWARD -o virbr0 -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
+	iptables -D FORWARD -o $qemu_network_name -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
 	iptables -t nat -D PREROUTING -p $PROTO --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
 }
 
