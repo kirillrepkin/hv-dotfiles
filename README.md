@@ -7,5 +7,5 @@ This repository contains configuration files for the Hypervisor (or `hv` for sho
 To install you can use the following command:
 
 ```sh
-./install.sh
+sudo ./install.sh
 ```
