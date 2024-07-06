@@ -89,12 +89,16 @@ function app_usb_manipulation() {
 # Manipulates network settings based on the command received.
 function app_network_manipulation() {
 	if [[ $command == "stopped" ]] || [[ $command == "reconnect" ]]; then
-		# windows sunshine/moonlight remote gaming
-		remove_port_nat_port_forwarding 192.168.122.78 13333 13333 
+		if [[ $guest_name == "windows" ]]; then
+			# sunshine/moonlight remote gaming
+			remove_port_nat_port_forwarding 192.168.122.78 13333 13333 
+		fi
 	fi
 	if [[ $command == "start" ]] || [[ $command == "reconnect" ]]; then
-		# windows sunshine/moonlight remote gaming
-		add_port_nat_port_forwarding 192.168.122.78 13333 13333
+		if [[ $guest_name == "windows" ]]; then
+			# sunshine/moonlight remote gaming
+			add_port_nat_port_forwarding 192.168.122.78 13333 13333
+		fi
 	fi	
 }
 
