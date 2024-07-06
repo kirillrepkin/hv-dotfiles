@@ -86,6 +86,7 @@ function app_usb_manipulation() {
     fi
 }
 
+# Retrieves the IPv4 address of a specified domain.
 function get_domain_ipv4_addr() {
 	echo $(virsh domifaddr $1 | grep ipv4 | awk '{print $4}' | cut -d'/' -f1)
 }
