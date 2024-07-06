@@ -86,18 +86,24 @@ function app_usb_manipulation() {
     fi
 }
 
+function get_domain_ipv4_addr() {
+	echo $(virsh domifaddr $1 | grep ipv4 | awk '{print $4}' | cut -d'/' -f1)
+}
+
 # Manipulates network settings based on the command received.
 function app_network_manipulation() {
 	if [[ $command == "stopped" ]] || [[ $command == "reconnect" ]]; then
+		ipv4_addr=get_domain_ipv4_addr $guest_name
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			remove_port_nat_port_forwarding 192.168.122.50 13333 13333 
+			remove_port_nat_port_forwarding $ipv4_addr 13333 13333 
 		fi
 	fi
-	if [[ $command == "start" ]] || [[ $command == "reconnect" ]]; then
+	if [[ $command == "started" ]] || [[ $command == "reconnect" ]]; then
+		ipv4_addr=get_domain_ipv4_addr $guest_name
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			add_port_nat_port_forwarding 192.168.122.50 13333 13333
+			add_port_nat_port_forwarding $ipv4_addr 13333 13333
 		fi
 	fi	
 }
