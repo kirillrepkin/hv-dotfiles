@@ -1,7 +1,15 @@
 #!/bin/bash
+
+# input script arguments
 command=$2
 guest_name=$1
+
+# global variables
 tmp_file=/tmp/libvirt_guest_name.txt
+
+# machine specific variables
+cpu_cores_default="0-15"
+cpu_cores_dedicated="0,8,1,9,2,10,3,11"
 
 
 # Resets a USB device by finding the device with the specified vendor ID and product ID and then toggling its authorization.
@@ -71,9 +79,9 @@ function app_gui_manipulation() {
 # Manipulates the CPU cores that can be used by the system, user, and init.scope slices based on the command received.
 function app_cpu_manipulation() {
 	if [[ $command == "started" ]]; then
-		cpu_cores_borrowing "0,8,1,9,2,10,3,11"
+		cpu_cores_borrowing $cpu_cores_dedicated
 	elif [[ $command == "release" ]]; then
-		cpu_cores_borrowing "0-15"
+		cpu_cores_borrowing $cpu_cores_default
 	fi
 }
 
