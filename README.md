@@ -2,7 +2,7 @@
 
 This repository contains configuration files for the Hypervisor (or `hv` for short).
 
-# Installation
+## Installation
 
 To install you can use the following command:
 
