@@ -12,6 +12,35 @@ cpu_cores_default="0-15"
 cpu_cores_dedicated="0,8,1,9,2,10,3,11"
 qemu_network_name="virbr0"
 
+# proto:guest_port:host_port
+nat_ports_windows=(
+	# sunshine/moonlight remote gaming
+    tcp:47984:47984
+    tcp:47985:47985
+    tcp:47986:47986
+    tcp:47987:47987
+    tcp:47988:47988
+    tcp:47989:47989
+    tcp:47990:47990
+    tcp:48010:48010
+    udp:48010:48010
+    udp:47998:47998
+    udp:47999:47999
+    udp:48000:48000
+    # remote desktop protocol
+    tcp:3389:3389
+    udp:3389:3389
+)
+
+nat_ports_fedora=(
+	# ssh
+	tcp:22:10022
+)
+
+nat_ports_macos=(
+	# ssh
+	tcp:22:10022
+)
 
 # Resets a USB device by finding the device with the specified vendor ID and product ID and then toggling its authorization.
 # 
@@ -100,7 +129,7 @@ function app_usb_manipulation() {
 
 # Retrieves the IPv4 address of a specified domain.
 function get_domain_ipv4_addr() {
-	echo $(virsh domifaddr $1 | grep ipv4 | awk '{print $4}' | cut -d'/' -f1)
+	echo $(virsh domifaddr $1 | grep ipv4 | awk '{print $4}' | cut -d '/' -f 1)
 }
 
 # Manipulates network settings based on the command received.
@@ -108,43 +137,19 @@ function app_network_manipulation() {
 	if [[ $command == "stopped" ]] || [[ $command == "reconnect" ]]; then
 		if [[ $guest_name == "windows" ]]; then
 			ipv4_addr=192.168.122.50
-			# sunshine/moonlight remote gaming
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47985 47985
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47986 47986
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47987 47987
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47988 47988
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
-			remove_port_nat_port_forwarding $ipv4_addr tcp 47990 47990
-			remove_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
-			remove_port_nat_port_forwarding $ipv4_addr udp 48010 48010
-			remove_port_nat_port_forwarding $ipv4_addr udp 47998 47998
-			remove_port_nat_port_forwarding $ipv4_addr udp 47999 47999
-			remove_port_nat_port_forwarding $ipv4_addr udp 48000 48000
-			# remote desktop protocol
-			remove_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
-			remove_port_nat_port_forwarding $ipv4_addr udp 3389 3389
+			for row in "${nat_ports_windows[@]}"; do
+				IFS=': ' read -r -a array <<< "$row"
+				remove_port_nat_port_forwarding $ipv4_addr ${array[0]} ${array[1]} ${array[2]}
+			done
 		fi
 	fi
 	if [[ $command == "started" ]] || [[ $command == "reconnect" ]]; then
 		if [[ $guest_name == "windows" ]]; then
 			ipv4_addr=192.168.122.50
-			# sunshine/moonlight remote gaming
-			add_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
-			add_port_nat_port_forwarding $ipv4_addr tcp 47985 47985
-			add_port_nat_port_forwarding $ipv4_addr tcp 47986 47986
-			add_port_nat_port_forwarding $ipv4_addr tcp 47987 47987
-			add_port_nat_port_forwarding $ipv4_addr tcp 47988 47988
-			add_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
-			add_port_nat_port_forwarding $ipv4_addr tcp 47990 47990
-			add_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
-			add_port_nat_port_forwarding $ipv4_addr udp 48010 48010
-			add_port_nat_port_forwarding $ipv4_addr udp 47998 47998
-			add_port_nat_port_forwarding $ipv4_addr udp 47999 47999
-			add_port_nat_port_forwarding $ipv4_addr udp 48000 48000
-			# remote desktop protocol
-			add_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
-			add_port_nat_port_forwarding $ipv4_addr udp 3389 3389
+			for row in "${nat_ports_windows[@]}"; do
+				IFS=': ' read -r -a array <<< "$row"
+				add_port_nat_port_forwarding $ipv4_addr ${array[0]} ${array[1]} ${array[2]}
+			done
 		fi
 	fi	
 }
