@@ -11,6 +11,7 @@ domain_list=$(virsh --connect=${url} list --all | grep '-' | awk '{ print $2 }' 
 for domain in $domain_list; do
     if [[ $domain != "" ]]; then
         echo dumping $domain
+        rm libvirt/domains/$domain.xml
         virsh --connect=${url} dumpxml $domain > libvirt/domains/$domain.xml
     fi
 done
