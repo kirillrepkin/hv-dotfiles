@@ -6,7 +6,7 @@ function update_symlink() {
     if [ -f "$symlink" ]; then
         rm "$symlink"
     fi
-    ln -s $symlink $srcfile
+    ln -s $srcfile $symlink
 }
 
 update_symlink /etc/libvirt/hooks/qemu $(pwd)/libvirt_hook_qemu.sh
