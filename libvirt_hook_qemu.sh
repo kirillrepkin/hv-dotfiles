@@ -36,10 +36,11 @@ function usb_reset() {
 # @param HOST_PORT The port number on the host machine.
 function add_port_nat_port_forwarding() {
 	GUEST_IP=$1
-	GUEST_PORT=$2
-	HOST_PORT=$3
-	iptables -I FORWARD -o virbr0 -p tcp -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
-	iptables -t nat -I PREROUTING -p tcp --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
+	PROTO=$2
+	GUEST_PORT=$3
+	HOST_PORT=$4
+	iptables -I FORWARD -o virbr0 -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
+	iptables -t nat -I PREROUTING -p $PROTO --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
 }
 
 # Removes port forwarding rules for a specific guest IP, guest port, and host port using iptables.
@@ -50,10 +51,11 @@ function add_port_nat_port_forwarding() {
 # @return void
 function remove_port_nat_port_forwarding() {
 	GUEST_IP=$1
-	GUEST_PORT=$2
-	HOST_PORT=$3
-	iptables -D FORWARD -o virbr0 -p tcp -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
-	iptables -t nat -D PREROUTING -p tcp --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
+	PROTO=$2
+	GUEST_PORT=$3
+	HOST_PORT=$4
+	iptables -D FORWARD -o virbr0 -p $PROTO -d $GUEST_IP --dport $GUEST_PORT -j ACCEPT
+	iptables -t nat -D PREROUTING -p $PROTO --dport $HOST_PORT -j DNAT --to $GUEST_IP:$GUEST_PORT
 }
 
 # Sets the CPU cores that can be used by the system, user, and init.scope slices.
@@ -105,14 +107,34 @@ function app_network_manipulation() {
 		ipv4_addr=$(get_domain_ipv4_addr $guest_name)
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			remove_port_nat_port_forwarding $ipv4_addr 13333 13333 
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
+			remove_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
+			remove_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
+			remove_port_nat_port_forwarding $ipv4_addr udp 47998 47998
+			remove_port_nat_port_forwarding $ipv4_addr udp 47999 47999
+			remove_port_nat_port_forwarding $ipv4_addr udp 48000 48000
+			remove_port_nat_port_forwarding $ipv4_addr udp 48002 48002
+			remove_port_nat_port_forwarding $ipv4_addr udp 48010 48010
+			# remote desktop protocol
+			remove_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
+			remove_port_nat_port_forwarding $ipv4_addr udp 3389 3389
 		fi
 	fi
 	if [[ $command == "started" ]] || [[ $command == "reconnect" ]]; then
 		ipv4_addr=$(get_domain_ipv4_addr $guest_name)
 		if [[ $guest_name == "windows" ]]; then
 			# sunshine/moonlight remote gaming
-			add_port_nat_port_forwarding $ipv4_addr 13333 13333
+			add_port_nat_port_forwarding $ipv4_addr tcp 47984 47984
+			add_port_nat_port_forwarding $ipv4_addr tcp 47989 47989
+			add_port_nat_port_forwarding $ipv4_addr tcp 48010 48010
+			add_port_nat_port_forwarding $ipv4_addr udp 47998 47998
+			add_port_nat_port_forwarding $ipv4_addr udp 47999 47999
+			add_port_nat_port_forwarding $ipv4_addr udp 48000 48000
+			add_port_nat_port_forwarding $ipv4_addr udp 48002 48002
+			add_port_nat_port_forwarding $ipv4_addr udp 48010 48010
+			# remote desktop protocol
+			add_port_nat_port_forwarding $ipv4_addr tcp 3389 3389
+			add_port_nat_port_forwarding $ipv4_addr udp 3389 3389
 		fi
 	fi	
 }
