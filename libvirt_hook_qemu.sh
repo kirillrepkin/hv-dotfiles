@@ -85,13 +85,6 @@ function app_usb_manipulation() {
         usb_reset 8087 0aaa
     fi
 }
-function app_usb_manipulation() {
-	if [[ $command == "started" ]]; then
-		usb_reset 8087 0aaa
-	elif [[ $command == "release" ]]; then
-		usb_reset 8087 0aaa
-	fi
-}
 
 # Manipulates network settings based on the command received.
 function app_network_manipulation() {
