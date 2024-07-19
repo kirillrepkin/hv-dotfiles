@@ -73,6 +73,7 @@ if __name__ == "__main__":
                 virt_cnt += 1
         pinnings.append(pin)
 
+    print(f"<vcpu placement='static'>{int(args.virtual_cores)}</vcpu>")
     print(f"<cpu mode='host-passthrough' check='none' migratable='on'>")
     print(f"\t<topology sockets='1' dies='1' clusters='1' cores='{int(args.virtual_cores/args.threads_per_core)}' threads='{args.threads_per_core}'/>")
     print(f"</cpu>")
