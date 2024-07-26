@@ -7,7 +7,7 @@ if [[ $url == "" ]]; then
     exit 1
 fi
 
-mkdir -p libvirt/domains
+mkdir -p libvirt/domains/${host}
 domain_list=$(virsh --connect=${url} list --all | grep '-' | awk '{ print $2 }' )
 for domain in $domain_list; do
     if [[ $domain != "" ]]; then
