@@ -1,5 +1,6 @@
 #!/bin/bash
 url=$1
+host=$2
 
 if [[ $url == "" ]]; then
     echo Error: connection url should be passed as first argument.
@@ -12,6 +13,6 @@ for domain in $domain_list; do
     if [[ $domain != "" ]]; then
         echo dumping $domain
         rm libvirt/domains/$domain.xml
-        virsh --connect=${url} dumpxml $domain > libvirt/domains/$domain.xml
+        virsh --connect=${url} dumpxml $domain > libvirt/domains/${host}/${domain}.xml
     fi
 done
