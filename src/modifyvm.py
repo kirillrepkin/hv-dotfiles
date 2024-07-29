@@ -17,7 +17,7 @@ class SystemLayout(SystemCpuLayout):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CPU Pinning script')
     parser.add_argument('--domain', type=str, required=True, help='domain name at hostname domain@hostname')
-    parser.add_argument('--memory', type=int, required=True, help='Total RAM in GB')
+    parser.add_argument('--memory', type=int, required=False, help='Total RAM in GB')
     parser.add_argument('--layout', type=str, required=True, help='Layout file')
     parser.add_argument('--dry-run', type=bool, required=False, default=False, help='Do not save results')
 
@@ -37,19 +37,21 @@ if __name__ == "__main__":
     if not os.path.exists(layout_file_name):
         raise Exception(f"Layout file {layout_file_name} not found")
         exit(1)
+    
+    layout_conf = json.load(open(layout_file_name))
+    layout = SystemLayout(**layout_conf)
+    if args.memory is not None:
+        layout.memory = args.memory
+    pinning = layout.make_pins()
+    system_xml = ET.fromstring(layout.to_xml(pinning))
 
     tree = ET.parse(xml_file_name)
     root = tree.getroot()
 
     for elem_name in ['.//memory', './/currentMemory']:
         elem = tree.find(elem_name)
-        elem.text = str(args.memory*1024*1024)
+        elem.text = str(layout.memory*1024*1024)
 
-    layout_conf = json.load(open(layout_file_name))
-    layout = SystemLayout(**layout_conf)
-    pinning = layout.make_pins()
-    system_xml = ET.fromstring(layout.to_xml(pinning))
-    
     for elem_name in ['.//vcpu', './/cpu', './/iothreads', './/cputune']:
         elem = tree.find(elem_name)
         root.remove(elem)
