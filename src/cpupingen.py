@@ -63,7 +63,7 @@ class SystemCpuLayout:
             pinnings.append(pin)
         return pinnings
 
-    def print_libvirt_xml(self, pinnings: [CorePinning]):
+    def to_xml(self, pinnings: [CorePinning]):
 
         def is_io(pin: CorePinning):
             return CoreType.io in pin.type
@@ -77,22 +77,32 @@ class SystemCpuLayout:
         def is_idle(pin: CorePinning):
             return CoreType.idle in pin.type
 
-        print(f"<vcpu placement='static'>{self.virtual_cores}</vcpu>")
-        print(f"<cpu mode='host-passthrough' check='none' migratable='on'>")
-        print(f"\t<topology sockets='1' dies='1' clusters='1' cores='{int(args.virtual_cores/args.threads_per_core)}' threads='{args.threads_per_core}'/>")
-        print(f"</cpu>")
-        print(f"<iothreads>{self.io_threads}</iothreads>")
-        print(f"<cputune>")
+        result = []
+        result.append(f"<systemcpulayout>")
+        result.append(f"<vcpu placement='static'>{self.virtual_cores}</vcpu>")
+        result.append(f"<cpu mode='host-passthrough' check='none' migratable='on'>")
+        result.append(f"\t<topology sockets='1' dies='1' clusters='1' cores='{int(self.virtual_cores/self.threads_per_core)}' threads='{self.threads_per_core}'/>")
+        result.append(f"</cpu>")
+        result.append(f"<iothreads>{self.io_threads}</iothreads>")
+        result.append(f"<cputune>")
         i=0
         for pin in filter(is_virtual, pinnings):
-            print(f"\t<vcpupin vcpu='{i}' cpuset='{pin.num}'/>")
+            result.append(f"\t<vcpupin vcpu='{i}' cpuset='{pin.num}'/>")
             i += 1
-        print(f"\t<emulatorpin cpuset='{",".join(self.system_cores)}'/>")
+        result.append(f"\t<emulatorpin cpuset='{",".join(self.system_cores)}'/>")
         i=1
         for pin in range(0, self.io_threads):
-            print(f"\t<iothreadpin iothread='{i}' cpuset='{",".join(self.system_cores)}'/>")
+            result.append(f"\t<iothreadpin iothread='{i}' cpuset='{",".join(self.system_cores)}'/>")
             i += 1
-        print(f"</cputune>")
+        result.append(f"</cputune>")
+        result.append(f"</systemcpulayout>")
+        return "\n".join(result)
+
+    def print_libvirt_xml(self, pinnings: [CorePinning]):
+        print(self.to_xml(pinnings))
+
+    def __repr__(self):
+        return f'SystemCpuLayout (t:{self.total_cores}, c:{self.threads_per_core}, io:{self.io_threads}, sys:{','.join(self.system_cores)}, vc:{self.virtual_cores})'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CPU Pinning script')
