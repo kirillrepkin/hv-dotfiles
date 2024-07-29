@@ -44,7 +44,7 @@ python3 ./src/cpupingen.py --total-cores 16 --threads-per-core 2 --io-threads 4 
 </systemcpulayout>
 ```
 
-## VM xml modyfing
+## VM xml modifying
 
 ```sh
 # default script execution
