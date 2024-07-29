@@ -47,6 +47,15 @@ class SystemCpuLayout:
         self.virtual_cores = virtual_cores
 
     def make_pins(self):
+        """
+        Generates a list of CorePinning objects representing the CPU pinning layout.
+        This function initializes an empty list `pinnings` to store the CorePinning objects. It also initializes two counters `virt_cnt` and `io_thread_cnt` to keep track of the number of virtual cores and IO threads, respectively.
+        The function then iterates over the range of `self.total_cores` and creates a CorePinning object for each core. The default pin state is set to idle. If the core number is found in `self.system_cores`, the pin is set to system and IO. Otherwise, if the number of virtual cores is less than `self.virtual_cores`, the pin is set to virtual and the `virt_cnt` is incremented.
+        Finally, the CorePinning object is appended to the `pinnings` list and the function returns the list.
+
+        Returns:
+            pinnings (list): A list of CorePinning objects representing the CPU pinning layout.
+        """
         pinnings = []
         virt_cnt = 0
         io_thread_cnt = 0
@@ -64,6 +73,15 @@ class SystemCpuLayout:
         return pinnings
 
     def to_xml(self, pinnings: [CorePinning]):
+        """
+        Generates an XML string representing the CPU pinning layout.
+
+        Args:
+            pinnings (List[CorePinning]): A list of CorePinning objects representing the CPU pinning layout.
+
+        Returns:
+            str: An XML string representing the CPU pinning layout.
+        """
 
         def is_io(pin: CorePinning):
             return CoreType.io in pin.type
@@ -99,6 +117,15 @@ class SystemCpuLayout:
         return "\n".join(result)
 
     def print_libvirt_xml(self, pinnings: [CorePinning]):
+        """
+        Print the XML representation of the given list of CorePinning objects.
+
+        Args:
+            pinnings (List[CorePinning]): A list of CorePinning objects.
+
+        Returns:
+            None
+        """
         print(self.to_xml(pinnings))
 
     def __repr__(self):
