@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
+        "cpupingen",
         "cpuset",
         "cputune",
         "emulatorpin",
         "iothread",
         "iothreadpin",
         "iothreads",
+        "systemcpulayout",
         "vcpu",
         "vcpupin",
         "virt"

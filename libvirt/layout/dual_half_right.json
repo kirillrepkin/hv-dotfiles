@@ -1,0 +1,8 @@
+{
+    "memory": 14,
+    "total_cores": 10,
+    "threads_per_core": 2,
+    "io_threads": 2,
+    "system_cores": "0,1,8,9",
+    "virtual_cores": 6
+}
