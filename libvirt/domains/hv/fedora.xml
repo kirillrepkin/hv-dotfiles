@@ -50,8 +50,8 @@
   <on_reboot>restart</on_reboot>
   <on_crash>destroy</on_crash>
   <pm>
-    <suspend-to-mem enabled='no'/>
-    <suspend-to-disk enabled='no'/>
+    <suspend-to-mem enabled='yes'/>
+    <suspend-to-disk enabled='yes'/>
   </pm>
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
@@ -212,26 +212,11 @@
       </source>
       <address type='pci' domain='0x0000' bus='0x08' slot='0x00' function='0x0'/>
     </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source guestReset='uninitialized'>
-        <vendor id='0x045e'/>
-        <product id='0x02e6'/>
+    <hostdev mode='subsystem' type='pci' managed='yes'>
+      <source>
+        <address domain='0x0000' bus='0x0b' slot='0x00' function='0x0'/>
       </source>
-      <address type='usb' bus='0' port='1'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source guestReset='uninitialized'>
-        <vendor id='0x8087'/>
-        <product id='0x0aaa'/>
-      </source>
-      <address type='usb' bus='0' port='3'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source guestReset='uninitialized'>
-        <vendor id='0x1532'/>
-        <product id='0x0e06'/>
-      </source>
-      <address type='usb' bus='0' port='2'/>
+      <address type='pci' domain='0x0000' bus='0x05' slot='0x00' function='0x0'/>
     </hostdev>
     <watchdog model='itco' action='reset'/>
     <memballoon model='none'/>
