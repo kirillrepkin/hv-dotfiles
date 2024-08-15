@@ -3,7 +3,7 @@
 function update_symlink() {
     symlink=$1
     srcfile=$2
-    if [ -f "$symlink" ]; then
+    if [ -L "$symlink" ] && [ -e "$symlink" ]; then
         rm "$symlink"
     fi
     ln -s $srcfile $symlink
