@@ -15,4 +15,3 @@ update_symlink /etc/libvirt/hooks/qemu $(pwd)/libvirt/hook_qemu.sh
 # modprobe
 update_symlink /etc/modprobe.d/blacklist.conf $(pwd)/modprobe/blacklist.conf
 update_symlink /etc/modprobe.d/vfio.conf $(pwd)/modprobe/vfio.conf
-update_symlink /etc/modprobe.d/vfio-pci.conf $(pwd)/modprobe/vfio.conf
