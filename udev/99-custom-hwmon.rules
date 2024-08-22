@@ -1,4 +1,4 @@
-SUBSYSTEM=="hwmon", ATTR{name}=="octo", SYMLINK+="hwmon_octo"
-SUBSYSTEM=="hwmon", ATTR{name}=="acpitz", SYMLINK+="hwmon_acpitz"
-SUBSYSTEM=="hwmon", ATTR{name}=="coretemp", SYMLINK+="hwmon_coretemp"
-SUBSYSTEM=="hwmon", ATTR{name}=="iwlwifi_1", SYMLINK+="hwmon_iwlwifi_1"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="octo", SYMLINK+="hwmon_octo"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="acpitz", SYMLINK+="hwmon_acpitz"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="coretemp", SYMLINK+="hwmon_coretemp"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTR{name}=="iwlwifi_1", SYMLINK+="hwmon_iwlwifi_1"
