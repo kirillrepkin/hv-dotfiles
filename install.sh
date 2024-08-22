@@ -17,7 +17,7 @@ update_symlink /etc/modprobe.d/blacklist.conf $(pwd)/modprobe/blacklist.conf
 update_symlink /etc/modprobe.d/vfio.conf $(pwd)/modprobe/vfio.conf
 
 # udev rules
-update_symlink /etc/udev/rules.d/99-custom-hwmon.rules $(pwd)/udev/99-custom-hwmon.rules
+update_symlink /usr/lib/udev/rules.d/99-custom-hwmon.rules $(pwd)/udev/99-custom-hwmon.rules
 
 sudo udevadm control --reload-rules
 sudo udevadm trigger
