@@ -1,4 +1,1 @@
-ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="octo", SYMLINK+="hwmon_octo"
-ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="acpitz", SYMLINK+="hwmon_acpitz"
-ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="coretemp", SYMLINK+="hwmon_coretemp"
-ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="iwlwifi_1", SYMLINK+="hwmon_iwlwifi_1"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="coretemp", SYMLINK+="hwmon_coretemp", RUN+="/bin/sh -c 'ln -s /sys/class/hwmon/%k/temp1_input /dev/hwmon_coretemp'"
