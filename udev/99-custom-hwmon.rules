@@ -1,1 +1,1 @@
-ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="coretemp", SYMLINK+="hwmon_coretemp", RUN+="/bin/sh -c 'ln -s /sys/class/hwmon/%k/temp1_input /dev/hwmon_coretemp'"
+ACTION=="add", SUBSYSTEM=="hwmon", ATTRS{name}=="coretemp", SYMLINK+="hwmon_coretemp", RUN+="/bin/sh -c 'ln -s /sys/class/hwmon/%k /dev/hwmon_coretemp'"
