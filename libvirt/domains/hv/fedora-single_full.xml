@@ -1,9 +1,9 @@
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
-  <name>windows-single_full</name>
-  <uuid>4bbf9c21-1b4e-4350-b35f-ead57c3a406f</uuid>
+  <name>fedora-single_full</name>
+  <uuid>63b7c1e6-a64a-46a9-8e80-71dbad1fe784</uuid>
   <metadata xmlns:ns0="http://libosinfo.org/xmlns/libvirt/domain/1.0">
     <ns0:libosinfo>
-      <ns0:os id="http://microsoft.com/win/11"/>
+      <ns0:os id="http://fedoraproject.org/fedora/unknown"/>
     </ns0:libosinfo>
   </metadata>
   <memory unit='KiB'>25165824</memory>
@@ -34,38 +34,21 @@
       <feature enabled='yes' name='secure-boot'/>
     </firmware>
     <loader readonly='yes' secure='yes' type='pflash'>/usr/share/edk2/x64/OVMF_CODE.secboot.4m.fd</loader>
-    <nvram template='/usr/share/edk2/x64/OVMF_VARS.4m.fd'>/var/lib/libvirt/qemu/nvram/windows_VARS.fd</nvram>
-    <boot dev='hd'/>
+    <nvram template='/usr/share/edk2/x64/OVMF_VARS.4m.fd'>/var/lib/libvirt/qemu/nvram/fedora_VARS.fd</nvram>
   </os>
   <features>
     <acpi/>
     <apic/>
-    <hyperv mode='custom'>
-      <relaxed state='on'/>
-      <vapic state='on'/>
-      <spinlocks state='on' retries='8191'/>
-      <vpindex state='on'/>
-      <synic state='on'/>
-      <reset state='on'/>
-      <vendor_id state='on' value='KVM Hv'/>
-      <frequencies state='on'/>
-    </hyperv>
-    <kvm>
-      <hidden state='on'/>
-    </kvm>
     <vmport state='off'/>
     <smm state='on'/>
   </features>
   <cpu mode='host-passthrough' check='none' migratable='on'>
     <topology sockets='1' dies='1' clusters='1' cores='6' threads='2'/>
   </cpu>
-  <clock offset='localtime'>
+  <clock offset='utc'>
     <timer name='rtc' tickpolicy='catchup'/>
     <timer name='pit' tickpolicy='delay'/>
     <timer name='hpet' present='no'/>
-    <timer name='kvmclock' present='no'/>
-    <timer name='hypervclock' present='no'/>
-    <timer name='tsc' present='yes' mode='native'/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
@@ -78,28 +61,33 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' discard='unmap'/>
-      <source file='/var/lib/libvirt/images/windows.qcow2'/>
-      <target dev='sda' bus='sata'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+      <source file='/var/lib/libvirt/images/fedora.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+      <boot order='2'/>
+      <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
     </disk>
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
-      <target dev='sdb' bus='sata'/>
+      <target dev='sda' bus='sata'/>
       <readonly/>
-      <address type='drive' controller='0' bus='0' target='0' unit='1'/>
+      <boot order='1'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
       <source file='/mnt/st02f/Virtualization/images/vlm-shared-source.qcow2'/>
-      <target dev='sdc' bus='sata'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
+      <target dev='sdb' bus='sata'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='1'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
       <source file='/mnt/st02f/Virtualization/images/vlm-shared-games.qcow2'/>
-      <target dev='sdd' bus='sata'/>
-      <address type='drive' controller='0' bus='0' target='0' unit='3'/>
+      <target dev='sdc' bus='sata'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='2'/>
     </disk>
+    <controller type='usb' index='0' model='qemu-xhci' ports='15'>
+      <address type='pci' domain='0x0000' bus='0x02' slot='0x00' function='0x0'/>
+    </controller>
     <controller type='pci' index='0' model='pcie-root'/>
     <controller type='pci' index='1' model='pcie-root-port'>
       <model name='pcie-root-port'/>
@@ -171,30 +159,29 @@
       <target chassis='14' port='0x1d'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x5'/>
     </controller>
-    <controller type='pci' index='15' model='pcie-root-port'>
-      <model name='pcie-root-port'/>
-      <target chassis='15' port='0x8'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x0'/>
-    </controller>
-    <controller type='pci' index='16' model='pcie-to-pci-bridge'>
-      <model name='pcie-pci-bridge'/>
-      <address type='pci' domain='0x0000' bus='0x08' slot='0x00' function='0x0'/>
-    </controller>
     <controller type='sata' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
     </controller>
     <controller type='virtio-serial' index='0'>
-      <address type='pci' domain='0x0000' bus='0x06' slot='0x00' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x03' slot='0x00' function='0x0'/>
     </controller>
-    <controller type='usb' index='0' model='qemu-xhci' ports='15'>
-      <address type='pci' domain='0x0000' bus='0x02' slot='0x00' function='0x0'/>
+    <controller type='scsi' index='0' model='virtio-scsi'>
+      <address type='pci' domain='0x0000' bus='0x09' slot='0x00' function='0x0'/>
     </controller>
     <interface type='network'>
-      <mac address='52:54:00:03:a9:7c'/>
+      <mac address='52:54:00:c6:2c:dd'/>
       <source network='default'/>
-      <model type='e1000e'/>
+      <model type='virtio'/>
       <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
     </interface>
+    <serial type='pty'>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0'/>
+    </console>
     <channel type='unix'>
       <target type='virtio' name='org.qemu.guest_agent.0'/>
       <address type='virtio-serial' controller='0' bus='0' port='1'/>
@@ -204,13 +191,9 @@
     <tpm model='tpm-crb'>
       <backend type='emulator' version='2.0'/>
     </tpm>
-    <graphics type='spice'>
-      <listen type='none'/>
+    <graphics type='spice' autoport='yes'>
+      <listen type='address'/>
       <image compression='off'/>
-      <jpeg compression='never'/>
-      <zlib compression='never'/>
-      <playback compression='off'/>
-      <streaming mode='off'/>
     </graphics>
     <sound model='ich9'>
       <codec type='micro'/>
@@ -225,33 +208,26 @@
       <source>
         <address domain='0x0000' bus='0x03' slot='0x00' function='0x0'/>
       </source>
-      <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x07' slot='0x00' function='0x0'/>
     </hostdev>
     <hostdev mode='subsystem' type='pci' managed='yes'>
       <source>
         <address domain='0x0000' bus='0x03' slot='0x00' function='0x1'/>
       </source>
-      <address type='pci' domain='0x0000' bus='0x05' slot='0x00' function='0x0'/>
+      <address type='pci' domain='0x0000' bus='0x08' slot='0x00' function='0x0'/>
     </hostdev>
     <hostdev mode='subsystem' type='pci' managed='yes'>
       <source>
         <address domain='0x0000' bus='0x08' slot='0x00' function='0x0'/>
       </source>
-      <address type='pci' domain='0x0000' bus='0x07' slot='0x00' function='0x0'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source>
-        <vendor id='0x0c70'/>
-        <product id='0xf011'/>
-      </source>
-      <address type='usb' bus='0' port='1'/>
+      <address type='pci' domain='0x0000' bus='0x05' slot='0x00' function='0x0'/>
     </hostdev>
     <watchdog model='itco' action='reset'/>
     <memballoon model='none'/>
-    <vsock model='virtio'>
-      <cid auto='yes' address='3'/>
-      <address type='pci' domain='0x0000' bus='0x03' slot='0x00' function='0x0'/>
-    </vsock>
+    <rng model='virtio'>
+      <backend model='random'>/dev/urandom</backend>
+      <address type='pci' domain='0x0000' bus='0x06' slot='0x00' function='0x0'/>
+    </rng>
   </devices>
   <qemu:commandline>
     <qemu:arg value='-object'/>
