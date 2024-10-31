@@ -13,7 +13,7 @@ sudo ./install.sh
 ## Dumping domains
 
 ```sh
-./dump.sh qemu+ssh://hv/system
+./dump.sh qemu+ssh://hv/system hv
 ```
 
 ## CPU pinning
