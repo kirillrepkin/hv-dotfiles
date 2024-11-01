@@ -224,6 +224,8 @@
     <qemu:arg value='ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'/>
     <qemu:arg value='-global'/>
     <qemu:arg value='nec-usb-xhci.msi=off'/>
+    <qemu:arg value='-cpu'/>
+    <qemu:arg value='Penryn,kvm=off,vendor=GenuineIntel,+invtsc'/>
     <qemu:arg value='-device'/>
     <qemu:arg value='isa-applesmc,osk=ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc'/>
     <qemu:arg value='-smbios'/>
